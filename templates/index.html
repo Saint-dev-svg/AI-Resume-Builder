@@ -1,38 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
 
-    <title>AI Resume Builder</title>
+{% block content %}
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
+<section class="hero">
 
-<body>
+    <h1>Create Professional Resumes with AI</h1>
 
-    <nav>
-        <h2>AI Resume Builder</h2>
+    <p>
+        Generate beautiful resumes and tailored cover letters in minutes.
+    </p>
 
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Resume</a></li>
-            <li><a href="#">Cover Letter</a></li>
-            <li><a href="#">Login</a></li>
-        </ul>
-    </nav>
+    <button>Get Started</button>
 
-    <section class="hero">
+</section>
 
-        <h1>Create Professional Resumes with AI</h1>
-
-        <p>
-            Generate beautiful resumes and tailored cover letters in minutes.
-        </p>
-
-        <button>Get Started</button>
-
-    </section>
-
-</body>
-</html>
+{% endblock %}
