@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -6,8 +6,29 @@ app = Flask(__name__)
 def home():
     return render_template("index.html", title = "Home")
 
-@app.route("/resume")
+@app.route("/resume", methods=["GET", "POST"])
 def resume():
+
+    if request.method == "POST":
+
+        full_name = request.form["full_name"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+        education = request.form["education"]
+        skills = request.form["skills"]
+        experience = request.form["experience"]
+
+        return render_template(
+            "result.html",
+            title="Resume Submitted",
+            full_name=full_name,
+            email=email,
+            phone=phone,
+            education=education,
+            skills=skills,
+            experience=experience
+        )
+        
     return render_template("resume.html", title = "Resume")
 
 @app.route("/cover-letter")

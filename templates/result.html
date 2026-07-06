@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero">
+
+    <h1>Resume Submitted Successfully!</h1>
+
+    <h2>Your Information</h2>
+
+    <p><strong>Full Name:</strong> {{ full_name }}</p>
+
+    <p><strong>Email:</strong> {{ email }}</p>
+
+    <p><strong>Phone:</strong> {{ phone }}</p>
+
+    <h3>Education</h3>
+
+    <p>{{ education }}</p>
+
+    <h3>Skills</h3>
+
+    <p>{{ skills }}</p>
+
+    <h3>Work Experience</h3>
+
+    <p>{{ experience }}</p>
+
+</section>
+
+{% endblock %}

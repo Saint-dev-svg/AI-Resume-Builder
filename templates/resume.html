@@ -3,13 +3,35 @@
 {% block content %}
 
 <section class="hero">
-    <h1>
-        Resume Builder
-    </h1>
 
-    <p>
-        Create a professional resume using Ai.
-    </p>
+    <h1>Resume Builder</h1>
+
+    <p>Fill in your details below.</p>
+
+    <form action="/resume" method="POST">
+
+        <label>Full Name</label><br>
+        <input type="text" name="full_name" required><br><br>
+
+        <label>Email</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Phone Number</label><br>
+        <input type="tel" name="phone"><br><br>
+
+        <label>Education</label><br>
+        <textarea name="education" rows="4"></textarea><br><br>
+
+        <label>Skills</label><br>
+        <textarea name="skills" rows="4"></textarea><br><br>
+
+        <label>Work Experience</label><br>
+        <textarea name="experience" rows="6"></textarea><br><br>
+
+        <button type="submit">Generate Resume</button>
+
+    </form>
+
 </section>
 
 {% endblock %}
