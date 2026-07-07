@@ -2,30 +2,30 @@
 
 {% block content %}
 
-<section class="hero">
+<div class="resume-preview">
+    <div class="resume-header">
+        <h1>{{full_name}}</h1>
+        <p>{{email}} | {{phone}}</p>
+    </div>
 
-    <h1>Resume Submitted Successfully!</h1>
+    <div class="resume-section">
+        <h2>Education</h2>
+        <p>{{education}}</p>
+    </div>
 
-    <h2>Your Information</h2>
+    <div class="resume-section">
+        <h2>Skills</h2>
+        <ul>
+            {% for skill in skills_list %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 
-    <p><strong>Full Name:</strong> {{ full_name }}</p>
-
-    <p><strong>Email:</strong> {{ email }}</p>
-
-    <p><strong>Phone:</strong> {{ phone }}</p>
-
-    <h3>Education</h3>
-
-    <p>{{ education }}</p>
-
-    <h3>Skills</h3>
-
-    <p>{{ skills }}</p>
-
-    <h3>Work Experience</h3>
-
-    <p>{{ experience }}</p>
-
-</section>
+    <div class="resume-section">
+        <h2>Work Experience</h2>
+        <p>experience</p>
+    </div>
+</div>
 
 {% endblock %}

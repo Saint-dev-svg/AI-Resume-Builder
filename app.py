@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -17,6 +17,17 @@ def resume():
         education = request.form["education"]
         skills = request.form["skills"]
         experience = request.form["experience"]
+        
+        if not full_name.strip():
+            return "Error: Full name can not be empty!"
+        
+        if "@" not in email:
+            return "Error: Please enter a valid email address!"
+        
+        if len(phone) < 10:
+            return "Error: Phone number is too short!"
+        
+        skills_list = [skill.strip() for skill in skills.split(",")]
 
         return render_template(
             "result.html",
@@ -25,7 +36,7 @@ def resume():
             email=email,
             phone=phone,
             education=education,
-            skills=skills,
+            skills_list=skills_list,
             experience=experience
         )
         
