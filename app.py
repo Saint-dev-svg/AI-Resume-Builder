@@ -1,10 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from ai_helper import generate_summary
 from config import Config
+from pdf_generator import create_resume_pdf
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+latest_resume = {}
 
 @app.route("/")
 def home():
@@ -12,7 +15,7 @@ def home():
 
 @app.route("/resume", methods=["GET", "POST"])
 def resume():
-
+    
     if request.method == "POST":
 
         full_name = request.form["full_name"]
@@ -40,6 +43,18 @@ def resume():
             experience
             
         )
+        
+        global latest_resume
+
+        latest_resume = {
+            "full_name": full_name,
+            "email": email,
+            "phone": phone,
+            "summary": summary,
+            "education": education,
+            "skills": skills,
+            "experience": experience,
+        }
 
         return render_template(
             "result.html",
@@ -53,6 +68,7 @@ def resume():
             summary = summary
         )
         
+        
     return render_template("resume.html", title = "Resume")
 
 @app.route("/cover-letter")
@@ -62,6 +78,17 @@ def cover_letter():
 @app.route("/login")
 def login():
     return render_template("login.html", title = "Login")
+
+@app.route("/download")
+def download_resume():
+    pdf = create_resume_pdf(latest_resume)
+        
+    return send_file(
+        pdf,
+        as_attachment=True,
+        download_name="resume.pdf",
+        mimetype="application/pdf"
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
