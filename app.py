@@ -1,6 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
+from ai_helper import generate_summary
+from config import Config
+
 
 app = Flask(__name__)
+app.config.from_object(Config)
 
 @app.route("/")
 def home():
@@ -28,16 +32,25 @@ def resume():
             return "Error: Phone number is too short!"
         
         skills_list = [skill.strip() for skill in skills.split(",")]
+        
+        summary = generate_summary(
+            full_name,
+            education,
+            skills,
+            experience
+            
+        )
 
         return render_template(
             "result.html",
-            title="Resume Submitted",
-            full_name=full_name,
-            email=email,
-            phone=phone,
-            education=education,
-            skills_list=skills_list,
-            experience=experience
+            title = "Resume Submitted",
+            full_name = full_name,
+            email = email,
+            phone = phone,
+            education = education,
+            skills_list = skills_list,
+            experience = experience,
+            summary = summary
         )
         
     return render_template("resume.html", title = "Resume")
