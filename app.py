@@ -2,10 +2,13 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 from ai_helper import generate_summary
 from config import Config
 from pdf_generator import create_resume_pdf
+from database.db import init_db, save_resume
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+init_db()
 
 latest_resume = {}
 
@@ -42,6 +45,16 @@ def resume():
             skills,
             experience
             
+        )
+        
+        save_resume(
+            full_name,
+            email,
+            phone,
+            education,
+            skills,
+            experience,
+            summary
         )
         
         global latest_resume
