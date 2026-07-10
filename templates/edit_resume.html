@@ -1,0 +1,35 @@
+{%extends  "base.html" %}
+{% block content %}
+
+<h1>Edit Resume</h1>
+
+    <form method="POST">
+
+        <label>Full Name</label>
+        <input type="text" name="full_name"
+        value="{{ resume[1] }}" required>
+
+        <label>Email</label>
+        <input type="email" name="email"
+        value="{{ resume[2] }}" required>
+
+        <label>Phone Number</label>
+        <input type="tel" name="phone"
+        value="{{ resume[3] }}">
+
+        <label>Education</label>
+        <textarea name="education">{{ resume[4] }}</textarea>
+
+        <label>Skills</label>
+        <textarea name="skills">{{ resume[5] }}</textarea>
+
+        <label>Work Experience</label>
+        <textarea name="experience">{{ resume[6] }}</textarea>
+
+        <label>Professional Summary</label>
+        <textarea name="summary">{{ resume[7] }}</textarea>
+
+        <button type="submit">Update Resume</button>
+
+    </form>
+{% endblock %}

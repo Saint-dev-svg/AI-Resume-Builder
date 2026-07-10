@@ -95,3 +95,42 @@ def delete_resume(resume_id):
     
     conn.commit()
     conn.close()
+    
+def update_resume(
+    resume_id,
+    full_name,
+    email,
+    phone,
+    education,
+    skills,
+    experience,
+    summary
+):
+    
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        UPDATE resumes
+        SET
+            full_name = ?,
+            email = ?,
+            phone = ?,
+            education = ?,
+            skills = ?,
+            experience = ?,
+            summary = ?
+        WHERE id = ?
+    """, (
+        full_name,
+        email,
+        phone,
+        education,
+        skills,
+        experience,
+        summary,
+        resume_id
+    ))
+    
+    conn.commit()
+    conn.close()

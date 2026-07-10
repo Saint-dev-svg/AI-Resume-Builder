@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 from ai_helper import generate_summary
 from config import Config
 from pdf_generator import create_resume_pdf
-from database.db import init_db, save_resume, get_all_resumes, get_resume_by_id, delete_resume
+from database.db import init_db, save_resume, get_all_resumes, get_resume_by_id, delete_resume, update_resume
 
 
 app = Flask(__name__)
@@ -116,7 +116,6 @@ def dashboard():
 def view_resume(resume_id):
     
     resume = get_resume_by_id(resume_id)
-    print(resume)
     
     return render_template(
         "view_resume.html",
@@ -129,6 +128,42 @@ def delete_resume_route(resume_id):
     delete_resume(resume_id)
     
     return redirect(url_for("dashboard"))
+
+@app.route("/edit/<int:resume_id>", methods = ["GET", "POST"])
+
+def edit_resume(resume_id):
+    if request.method == "POST":
+        
+        print(request.method)
+        print(request.form)
+        
+        full_name = request.form["full_name"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+        education = request.form["education"]
+        skills = request.form["skills"]
+        experience = request.form["experience"]
+        summary = request.form["summary"]
+        
+        update_resume(
+            resume_id,
+            full_name,
+            email,
+            phone,
+            education,
+            skills,
+            experience,
+            summary
+        )
+        
+        return redirect(url_for("dashboard"))
+    
+    resume = get_resume_by_id(resume_id)
+    
+    return render_template(
+        "edit_resume.html",
+        resume = resume
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
