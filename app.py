@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 from ai_helper import generate_summary
 from config import Config
 from pdf_generator import create_resume_pdf
-from database.db import init_db, save_resume
+from database.db import init_db, save_resume, get_all_resumes, get_resume_by_id, delete_resume
 
 
 app = Flask(__name__)
@@ -102,6 +102,33 @@ def download_resume():
         download_name="resume.pdf",
         mimetype="application/pdf"
     )
+
+@app.route("/dashboard")
+def dashboard():
+    resumes = get_all_resumes()
+    
+    return render_template(
+        "dashboard.html",
+        resumes = resumes
+    )
+
+@app.route("/resume/<int:resume_id>")
+def view_resume(resume_id):
+    
+    resume = get_resume_by_id(resume_id)
+    print(resume)
+    
+    return render_template(
+        "view_resume.html",
+        resume = resume
+    )
+    
+@app.route("/delete/<int:resume_id>")
+def delete_resume_route(resume_id):
+    
+    delete_resume(resume_id)
+    
+    return redirect(url_for("dashboard"))
 
 if __name__ == "__main__":
     app.run(debug=True)

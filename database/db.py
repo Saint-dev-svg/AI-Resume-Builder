@@ -52,3 +52,46 @@ def save_resume(full_name, email, phone, education, skills, experience, summary)
     
     conn.commit()
     conn.close()
+    
+def get_all_resumes():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        SELECT id, full_name, email
+        FROM resumes
+        ORDER BY id DESC
+    """)
+    
+    resumes = cursor.fetchall()
+    conn.close()
+    
+    return resumes
+
+def get_resume_by_id(resume_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        SELECT *
+        FROM resumes
+        WHERE id = ? 
+    """, (resume_id,))
+    
+    resume = cursor.fetchone()
+    
+    conn.close()
+    
+    return resume
+
+def delete_resume(resume_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        DELETE FROM resumes
+        WHERE id = ? 
+    """, (resume_id,))
+    
+    conn.commit()
+    conn.close()

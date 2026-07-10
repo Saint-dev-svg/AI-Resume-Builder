@@ -159,6 +159,32 @@ label{
     line-height: 1.8;
 }
 
+.dashboard-table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+    border: 1px solid #ddd;
+    padding: 14px;
+    text-align: left;
+}
+
+.dashboard-table th {
+    background-color: #2563eb;
+    color: white;
+}
+
+.dashboard-table tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+.dashboard-table tr:hover {
+    background-color: #eef4ff;
+}
+
 @media (max-width: 768px) {
 
     nav {
