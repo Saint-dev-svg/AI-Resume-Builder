@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from ai_helper import generate_summary
 from config import Config
@@ -107,6 +107,8 @@ def login():
         user = get_user_by_email(email)
 
         if user and check_password_hash(user[3], password):
+            session["user_id"] = user[0]
+            session["full_name"] = user[1]
             return redirect(url_for("dashboard"))
 
         return "Invalid email or password."
@@ -126,6 +128,9 @@ def download_resume():
 
 @app.route("/dashboard")
 def dashboard():
+    
+    if "user_id" not in session:
+        return redirect(url_for("login"))
 
     search_query = request.args.get("search", "")
     sort_by = request.args.get("sort", "newest")
