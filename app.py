@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from ai_helper import generate_summary
 from config import Config
 from pdf_generator import create_resume_pdf
@@ -96,9 +96,22 @@ def resume():
 def cover_letter():
     return render_template("cover_letter.html", title = "Cover Letter")
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html", title = "Login")
+
+    if request.method == "POST":
+
+        email = request.form["email"]
+        password = request.form["password"]
+
+        user = get_user_by_email(email)
+
+        if user and check_password_hash(user[3], password):
+            return redirect(url_for("dashboard"))
+
+        return "Invalid email or password."
+
+    return render_template("login.html")
 
 @app.route("/download")
 def download_resume():
