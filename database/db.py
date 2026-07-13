@@ -189,3 +189,17 @@ def sort_resumes(sort_by):
     conn.close()
 
     return resumes
+
+def get_dashboard_stats():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT COUNT(*) FROM resumes")
+    
+    total_resumes = cursor.fetchone()[0]
+    
+    conn.close()
+    
+    return {
+        "total_resumes": total_resumes
+    }

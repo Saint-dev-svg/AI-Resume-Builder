@@ -2,7 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 from ai_helper import generate_summary
 from config import Config
 from pdf_generator import create_resume_pdf
-from database.db import init_db, save_resume, get_all_resumes, get_resume_by_id, delete_resume, update_resume, search_resumes, sort_resumes
+from database.db import (init_db, save_resume, get_all_resumes, 
+    get_resume_by_id, 
+    delete_resume, update_resume, 
+    search_resumes, sort_resumes,
+    get_dashboard_stats
+)
 
 
 app = Flask(__name__)
@@ -113,12 +118,15 @@ def dashboard():
         resumes = search_resumes(search_query)
     else:
         resumes = sort_resumes(sort_by)
+        
+    stats = get_dashboard_stats()
 
     return render_template(
         "dashboard.html",
         resumes=resumes,
         search_query=search_query,
-        sort_by=sort_by
+        sort_by=sort_by,
+        stats=stats
     )
 
 @app.route("/resume/<int:resume_id>")

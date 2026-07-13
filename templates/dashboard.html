@@ -6,45 +6,54 @@
     <h1>Saved Resumes</h1>
     <p>All resumes generated using the AI resumes Builder.</p>
 
+    <div class="stats-container">
+
+        <div class="stat-card">
+            <h3>Total Resumes</h3>
+            <p>{{ stats.total_resumes }}</p>
+        </div>
+
+    </div>
+
     <form method="GET" action="{{ url_for('dashboard') }}" class="search-form">
 
-    <input
-        type="text"
-        name="search"
-        placeholder="Search by full name..."
-        value="{{ search_query }}">
+        <input
+            type="text"
+            name="search"
+            placeholder="Search by full name..."
+            value="{{ search_query }}">
 
-    <button type="submit">Search</button>
+        <button type="submit">Search</button>
 
-</form>
+    </form>
 
-<form method="GET" action="{{ url_for('dashboard') }}" class="sort-form">
+    <form method="GET" action="{{ url_for('dashboard') }}" class="sort-form">
 
-    <select name="sort" onchange="this.form.submit()">
+        <select name="sort" onchange="this.form.submit()">
 
-        <option value="newest"
-            {% if sort_by == "newest" %}selected{% endif %}>
-            Newest First
-        </option>
+            <option value="newest"
+                {% if sort_by == "newest" %}selected{% endif %}>
+                Newest First
+            </option>
 
-        <option value="oldest"
-            {% if sort_by == "oldest" %}selected{% endif %}>
-            Oldest First
-        </option>
+            <option value="oldest"
+                {% if sort_by == "oldest" %}selected{% endif %}>
+                Oldest First
+            </option>
 
-        <option value="name_asc"
-            {% if sort_by == "name_asc" %}selected{% endif %}>
-            Name (A–Z)
-        </option>
+            <option value="name_asc"
+                {% if sort_by == "name_asc" %}selected{% endif %}>
+                Name (A–Z)
+            </option>
 
-        <option value="name_desc"
-            {% if sort_by == "name_desc" %}selected{% endif %}>
-            Name (Z–A)
-        </option>
+            <option value="name_desc"
+                {% if sort_by == "name_desc" %}selected{% endif %}>
+                Name (Z–A)
+            </option>
 
-    </select>
+        </select>
 
-</form>
+    </form>
 
     <table class="dashboard-table">
         <thead>

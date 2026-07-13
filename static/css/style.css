@@ -252,3 +252,30 @@ label{
     border: 1px solid #ccc;
     font-size: 16px;
 }
+
+.stats-container{
+    display:flex;
+    gap:20px;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+}
+
+.stat-card{
+    background:#ffffff;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    min-width:220px;
+}
+
+.stat-card h3{
+    margin-bottom:10px;
+    font-size:18px;
+    color:#555;
+}
+
+.stat-card p{
+    font-size:32px;
+    font-weight:bold;
+    color:#1e3a8a;
+}
