@@ -279,3 +279,22 @@ label{
     font-weight:bold;
     color:#1e3a8a;
 }
+
+.filter-form{
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.filter-form select,
+.filter-form input{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+.filter-form input{
+    flex:1;
+}

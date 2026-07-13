@@ -6,7 +6,8 @@ from database.db import (init_db, save_resume, get_all_resumes,
     get_resume_by_id, 
     delete_resume, update_resume, 
     search_resumes, sort_resumes,
-    get_dashboard_stats
+    get_dashboard_stats,
+    filter_resumes
 )
 
 
@@ -113,9 +114,15 @@ def dashboard():
 
     search_query = request.args.get("search", "")
     sort_by = request.args.get("sort", "newest")
+    filter_type = request.args.get("filter_type", "")
+    filter_value = request.args.get("filter_value", "")
 
     if search_query:
         resumes = search_resumes(search_query)
+        
+    elif filter_type and filter_value:
+        resumes = filter_resumes(filter_type, filter_value)
+    
     else:
         resumes = sort_resumes(sort_by)
         
@@ -126,6 +133,8 @@ def dashboard():
         resumes=resumes,
         search_query=search_query,
         sort_by=sort_by,
+        filter_type=filter_type,
+        filter_value=filter_value,
         stats=stats
     )
 

@@ -203,3 +203,36 @@ def get_dashboard_stats():
     return {
         "total_resumes": total_resumes
     }
+    
+def filter_resumes(filter_type, filter_value):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    if filter_type == "education":
+        cursor.execute("""
+            SELECT id, full_name, email
+            FROM resumes
+            WHERE education LIKE ?
+            ORDER BY id DESC
+        """, (f"%{filter_value}%",))
+
+    elif filter_type == "skills":
+        cursor.execute("""
+            SELECT id, full_name, email
+            FROM resumes
+            WHERE skills LIKE ?
+            ORDER BY id DESC
+        """, (f"%{filter_value}%",))
+
+    else:
+        cursor.execute("""
+            SELECT id, full_name, email
+            FROM resumes
+            ORDER BY id DESC
+        """)
+
+    resumes = cursor.fetchall()
+
+    conn.close()
+
+    return resumes

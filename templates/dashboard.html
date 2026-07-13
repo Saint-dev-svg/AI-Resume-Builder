@@ -55,6 +55,32 @@
 
     </form>
 
+    <form method="GET" action="{{ url_for('dashboard') }}" class="filter-form">
+
+        <select name="filter_type">
+
+            <option value="education"
+                {% if filter_type == "education" %}selected{% endif %}>
+                Education
+            </option>
+
+            <option value="skills"
+                {% if filter_type == "skills" %}selected{% endif %}>
+                Skills
+            </option>
+
+        </select>
+
+        <input
+            type="text"
+            name="filter_value"
+            placeholder="Enter filter value..."
+            value="{{ filter_value }}">
+
+        <button type="submit">Filter</button>
+
+    </form>
+
     <table class="dashboard-table">
         <thead>
             <tr>
