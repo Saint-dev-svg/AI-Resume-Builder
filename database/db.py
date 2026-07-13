@@ -134,3 +134,18 @@ def update_resume(
     
     conn.commit()
     conn.close()
+    
+def search_resumes(search_query):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        SELECT id, full_name, email FROM resumes
+        WHERE full_name LIKE ?
+        ORDER BY id DESC 
+    """, (f"%{search_query}%",))
+    
+    resumes = cursor.fetchall()
+    
+    conn.close()
+    return resumes

@@ -230,3 +230,14 @@ label{
     }
 
 }
+
+.search-form{
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.search-form input{
+    flex: 1;
+    margin: 0;
+}

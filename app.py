@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 from ai_helper import generate_summary
 from config import Config
 from pdf_generator import create_resume_pdf
-from database.db import init_db, save_resume, get_all_resumes, get_resume_by_id, delete_resume, update_resume
+from database.db import init_db, save_resume, get_all_resumes, get_resume_by_id, delete_resume, update_resume, search_resumes
 
 
 app = Flask(__name__)
@@ -105,11 +105,18 @@ def download_resume():
 
 @app.route("/dashboard")
 def dashboard():
-    resumes = get_all_resumes()
-    
+
+    search_query = request.args.get("search", "")
+
+    if search_query:
+        resumes = search_resumes(search_query)
+    else:
+        resumes = get_all_resumes()
+
     return render_template(
         "dashboard.html",
-        resumes = resumes
+        resumes=resumes,
+        search_query=search_query
     )
 
 @app.route("/resume/<int:resume_id>")
@@ -133,10 +140,7 @@ def delete_resume_route(resume_id):
 
 def edit_resume(resume_id):
     if request.method == "POST":
-        
-        print(request.method)
-        print(request.form)
-        
+                
         full_name = request.form["full_name"]
         email = request.form["email"]
         phone = request.form["phone"]

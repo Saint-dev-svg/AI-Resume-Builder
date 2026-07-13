@@ -6,6 +6,18 @@
     <h1>Saved Resumes</h1>
     <p>All resumes generated using the AI resumes Builder.</p>
 
+    <form method="GET" action="{{ url_for('dashboard') }}" class="search-form">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search by full name..."
+        value="{{ search_query }}">
+
+    <button type="submit">Search</button>
+
+</form>
+
     <table class="dashboard-table">
         <thead>
             <tr>
