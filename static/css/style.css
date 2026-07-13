@@ -241,3 +241,14 @@ label{
     flex: 1;
     margin: 0;
 }
+
+.sort-form{
+    margin-bottom: 20px;
+}
+
+.sort-form select{
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}

@@ -18,6 +18,34 @@
 
 </form>
 
+<form method="GET" action="{{ url_for('dashboard') }}" class="sort-form">
+
+    <select name="sort" onchange="this.form.submit()">
+
+        <option value="newest"
+            {% if sort_by == "newest" %}selected{% endif %}>
+            Newest First
+        </option>
+
+        <option value="oldest"
+            {% if sort_by == "oldest" %}selected{% endif %}>
+            Oldest First
+        </option>
+
+        <option value="name_asc"
+            {% if sort_by == "name_asc" %}selected{% endif %}>
+            Name (A–Z)
+        </option>
+
+        <option value="name_desc"
+            {% if sort_by == "name_desc" %}selected{% endif %}>
+            Name (Z–A)
+        </option>
+
+    </select>
+
+</form>
+
     <table class="dashboard-table">
         <thead>
             <tr>

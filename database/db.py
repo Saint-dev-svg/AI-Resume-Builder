@@ -149,3 +149,43 @@ def search_resumes(search_query):
     
     conn.close()
     return resumes
+
+def sort_resumes(sort_by):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    if sort_by == "oldest":
+        query = """
+            SELECT id, full_name, email
+            FROM resumes
+            ORDER BY id ASC
+        """
+
+    elif sort_by == "name_asc":
+        query = """
+            SELECT id, full_name, email
+            FROM resumes
+            ORDER BY full_name ASC
+        """
+
+    elif sort_by == "name_desc":
+        query = """
+            SELECT id, full_name, email
+            FROM resumes
+            ORDER BY full_name DESC
+        """
+
+    else:
+        query = """
+            SELECT id, full_name, email
+            FROM resumes
+            ORDER BY id DESC
+        """
+
+    cursor.execute(query)
+
+    resumes = cursor.fetchall()
+
+    conn.close()
+
+    return resumes
