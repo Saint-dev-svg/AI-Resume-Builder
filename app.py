@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file
+from werkzeug.security import generate_password_hash
 from ai_helper import generate_summary
 from config import Config
 from pdf_generator import create_resume_pdf
@@ -7,7 +8,8 @@ from database.db import (init_db, save_resume, get_all_resumes,
     delete_resume, update_resume, 
     search_resumes, sort_resumes,
     get_dashboard_stats,
-    filter_resumes
+    filter_resumes, save_user,
+    get_user_by_email
 )
 
 
@@ -187,6 +189,32 @@ def edit_resume(resume_id):
         "edit_resume.html",
         resume = resume
     )
+    
+@app.route("/register", methods=["GET", "POST"])
+def register():
+
+    if request.method == "POST":
+
+        full_name = request.form["full_name"]
+        email = request.form["email"]
+        password = request.form["password"]
+        
+        existing_user = get_user_by_email(email)
+        
+        if existing_user:
+            return "An account with this email already exists."
+
+        hashed_password = generate_password_hash(password)
+
+        save_user(
+            full_name,
+            email,
+            hashed_password
+        )
+
+        return redirect(url_for("dashboard"))
+
+    return render_template("register.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

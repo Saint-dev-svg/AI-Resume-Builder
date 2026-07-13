@@ -20,6 +20,15 @@ def init_db():
         )
     """)
     
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            full_name TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL
+        )
+    """)
+    
     conn.commit()
     conn.close()
     
@@ -236,3 +245,39 @@ def filter_resumes(filter_type, filter_value):
     conn.close()
 
     return resumes
+
+def save_user(full_name, email, password):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO users(
+            full_name,
+            email,
+            password
+        )
+
+        VALUES (?, ?, ?)
+    """, (
+        full_name,
+        email,
+        password
+    ))
+
+    conn.commit()
+    conn.close()
+    
+def get_user_by_email(email):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT * FROM users
+        WHERE email = ?
+    """, (email,))
+
+    user = cursor.fetchone()
+
+    conn.close()
+
+    return user
