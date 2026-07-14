@@ -3,33 +3,44 @@
 {% block content %}
 
 <div class="resume-preview">
-    
+
     <div class="resume-header">
-        <h1>{{ resume[2] }}</h1>
-        <p>{{ resume[3] }} | {{ resume[3] }}</p>
+        <h1>{{ resume["full_name"] }}</h1>
+        <p>{{ resume["email"] }} | {{ resume["phone"] }}</p>
     </div>
 
     <div class="resume-section">
-        <h2>Professional summary</h2>
-        <p>{{ resume[8] }}</p>
+        <h2>Professional Summary</h2>
+        <p>{{ resume["summary"] }}</p>
     </div>
 
     <div class="resume-section">
         <h2>Education</h2>
-        <p>{{ resume[5] }}</p>
+        <p>{{ resume["education"] }}</p>
     </div>
 
     <div class="resume-section">
         <h2>Skills</h2>
-        <p> {{ resume[6] }}</p>
+        <p>{{ resume["skills"] }}</p>
     </div>
 
     <div class="resume-section">
         <h2>Work Experience</h2>
-        <p>{{ resume[7] }}</p>
+        <p>{{ resume["experience"] }}</p>
     </div>
 
 </div>
+<div class="resume-actions">
 
+    <a href="{{ url_for('edit_resume', resume_id=resume['id']) }}">
+        Edit Resume
+    </a>
+
+</div>
+<div class="resume-actions"></div>
+    <a href="{{ url_for('dashboard') }}">
+        Back to Dashboard
+    </a>
+</div>
 
 {% endblock %}

@@ -206,7 +206,7 @@ def edit_resume(resume_id):
             summary
         )
         
-        return redirect(url_for("dashboard"))
+        return redirect(url_for("view_resume", resume_id=resume_id))
     
     resume = get_resume_by_id(resume_id)
     

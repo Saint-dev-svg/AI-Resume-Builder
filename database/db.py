@@ -5,6 +5,7 @@ DB_PATH = os.path.join(os.path.dirname(__file__), "resume.db")
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -42,6 +43,7 @@ def save_resume(
 ):
     
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -73,6 +75,7 @@ def save_resume(
     
 def get_all_resumes():
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -88,6 +91,7 @@ def get_all_resumes():
 
 def get_resume_by_id(resume_id):
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -104,6 +108,7 @@ def get_resume_by_id(resume_id):
 
 def delete_resume(resume_id):
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -126,6 +131,7 @@ def update_resume(
 ):
     
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -155,6 +161,7 @@ def update_resume(
     
 def search_resumes(user_id, search_query):
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
     search = f"%{search_query}%"
@@ -182,6 +189,7 @@ def search_resumes(user_id, search_query):
 
 def sort_resumes(user_id, sort_by):
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
     if sort_by == "oldest":
@@ -226,6 +234,7 @@ def sort_resumes(user_id, sort_by):
 
 def get_dashboard_stats(user_id):
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -244,6 +253,7 @@ def get_dashboard_stats(user_id):
     
 def filter_resumes(user_id, filter_type, filter_value):
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
     filter_text = f"%{filter_value}%"
@@ -282,6 +292,7 @@ def filter_resumes(user_id, filter_type, filter_value):
 
 def save_user(full_name, email, password):
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -303,6 +314,7 @@ def save_user(full_name, email, password):
     
 def get_user_by_email(email):
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -318,6 +330,7 @@ def get_user_by_email(email):
 
 def get_user_resumes(user_id):
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
     cursor.execute("""
