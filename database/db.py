@@ -10,6 +10,7 @@ def init_db():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS resumes(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
             full_name TEXT,
             email TEXT,
             phone TEXT,
@@ -32,13 +33,20 @@ def init_db():
     conn.commit()
     conn.close()
     
-def save_resume(full_name, email, phone, education, skills, experience, summary):
+def save_resume(
+    user_id, full_name, 
+    email, phone, 
+    education, skills, 
+    experience, summary
+
+):
     
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
     cursor.execute("""
         INSERT INTO resumes (
+            user_id,
             full_name,
             email,
             phone,
@@ -48,8 +56,9 @@ def save_resume(full_name, email, phone, education, skills, experience, summary)
             summary
         )
         
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """,(
+        user_id,
         full_name,
         email,
         phone,
@@ -144,22 +153,34 @@ def update_resume(
     conn.commit()
     conn.close()
     
-def search_resumes(search_query):
+def search_resumes(user_id, search_query):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    
+
+    search = f"%{search_query}%"
+
     cursor.execute("""
-        SELECT id, full_name, email FROM resumes
-        WHERE full_name LIKE ?
-        ORDER BY id DESC 
-    """, (f"%{search_query}%",))
-    
+        SELECT id, full_name, email
+        FROM resumes
+        WHERE user_id = ?
+        AND (
+            full_name LIKE ?
+            OR email LIKE ?
+        )
+        ORDER BY id DESC
+    """, (
+        user_id,
+        search,
+        search
+    ))
+
     resumes = cursor.fetchall()
-    
+
     conn.close()
+
     return resumes
 
-def sort_resumes(sort_by):
+def sort_resumes(user_id, sort_by):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -167,6 +188,7 @@ def sort_resumes(sort_by):
         query = """
             SELECT id, full_name, email
             FROM resumes
+            WHERE user_id = ?
             ORDER BY id ASC
         """
 
@@ -174,6 +196,7 @@ def sort_resumes(sort_by):
         query = """
             SELECT id, full_name, email
             FROM resumes
+            WHERE user_id = ?
             ORDER BY full_name ASC
         """
 
@@ -181,6 +204,7 @@ def sort_resumes(sort_by):
         query = """
             SELECT id, full_name, email
             FROM resumes
+            WHERE user_id = ?
             ORDER BY full_name DESC
         """
 
@@ -188,10 +212,11 @@ def sort_resumes(sort_by):
         query = """
             SELECT id, full_name, email
             FROM resumes
+            WHERE user_id = ?
             ORDER BY id DESC
         """
 
-    cursor.execute(query)
+    cursor.execute(query, (user_id,))
 
     resumes = cursor.fetchall()
 
@@ -199,11 +224,15 @@ def sort_resumes(sort_by):
 
     return resumes
 
-def get_dashboard_stats():
+def get_dashboard_stats(user_id):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
-    cursor.execute("SELECT COUNT(*) FROM resumes")
+    cursor.execute("""
+        SELECT COUNT(*) 
+        FROM resumes
+        WHERE user_id = ?
+    """, (user_id,))
     
     total_resumes = cursor.fetchone()[0]
     
@@ -213,32 +242,37 @@ def get_dashboard_stats():
         "total_resumes": total_resumes
     }
     
-def filter_resumes(filter_type, filter_value):
+def filter_resumes(user_id, filter_type, filter_value):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
+
+    filter_text = f"%{filter_value}%"
 
     if filter_type == "education":
         cursor.execute("""
             SELECT id, full_name, email
             FROM resumes
-            WHERE education LIKE ?
+            WHERE user_id = ?
+            AND education LIKE ?
             ORDER BY id DESC
-        """, (f"%{filter_value}%",))
+        """, (user_id, filter_text))
 
     elif filter_type == "skills":
         cursor.execute("""
             SELECT id, full_name, email
             FROM resumes
-            WHERE skills LIKE ?
+            WHERE user_id = ?
+            AND skills LIKE ?
             ORDER BY id DESC
-        """, (f"%{filter_value}%",))
+        """, (user_id, filter_text))
 
     else:
         cursor.execute("""
             SELECT id, full_name, email
             FROM resumes
+            WHERE user_id = ?
             ORDER BY id DESC
-        """)
+        """, (user_id,))
 
     resumes = cursor.fetchall()
 
@@ -281,3 +315,20 @@ def get_user_by_email(email):
     conn.close()
 
     return user
+
+def get_user_resumes(user_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        SELECT id, full_name, email
+        FROM resumes
+        WHERE user_id = ?
+        ORDER BY DESC
+    """, (user_id,))
+    
+    resumes = cursor.fetchall()
+    
+    conn.close()
+    
+    return resumes

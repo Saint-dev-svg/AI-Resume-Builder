@@ -55,7 +55,10 @@ def resume():
             
         )
         
+        user_id = session["user_id"]
+        
         save_resume(
+            user_id,
             full_name,
             email,
             phone,
@@ -131,6 +134,10 @@ def dashboard():
     
     if "user_id" not in session:
         return redirect(url_for("login"))
+    
+    user_id = session["user_id"]
+    print(user_id)
+    print(type(user_id))
 
     search_query = request.args.get("search", "")
     sort_by = request.args.get("sort", "newest")
@@ -138,15 +145,15 @@ def dashboard():
     filter_value = request.args.get("filter_value", "")
 
     if search_query:
-        resumes = search_resumes(search_query)
+        resumes = search_resumes(user_id, search_query)
         
     elif filter_type and filter_value:
-        resumes = filter_resumes(filter_type, filter_value)
+        resumes = filter_resumes(user_id, filter_type, filter_value)
     
     else:
-        resumes = sort_resumes(sort_by)
+        resumes = sort_resumes(user_id, sort_by)
         
-    stats = get_dashboard_stats()
+    stats = get_dashboard_stats(user_id)
 
     return render_template(
         "dashboard.html",
