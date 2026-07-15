@@ -89,8 +89,12 @@ def save_resume(
         summary
     ))
     
+    resume_id = cursor.lastrowid
+    
     conn.commit()
     conn.close()
+    
+    return resume_id
     
 def get_all_resumes():
     conn = sqlite3.connect(DB_PATH)

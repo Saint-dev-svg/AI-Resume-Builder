@@ -60,7 +60,7 @@ def resume():
         
         user_id = session["user_id"]
         
-        save_resume(
+        resume_id = save_resume(
             user_id,
             full_name,
             email,
@@ -71,30 +71,9 @@ def resume():
             summary
         )
         
-        global latest_resume
-
-        latest_resume = {
-            "full_name": full_name,
-            "email": email,
-            "phone": phone,
-            "summary": summary,
-            "education": education,
-            "skills": skills,
-            "experience": experience,
-        }
-
-        return render_template(
-            "result.html",
-            title = "Resume Submitted",
-            full_name = full_name,
-            email = email,
-            phone = phone,
-            education = education,
-            skills_list = skills_list,
-            experience = experience,
-            summary = summary
-        )
+        flash("Resume created successfully!", "success")
         
+        return redirect(url_for("view_resume", resume_id=resume_id))
         
     return render_template("resume.html", title = "Resume")
 
