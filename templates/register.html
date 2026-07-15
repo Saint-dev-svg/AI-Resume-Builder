@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="form-container">
 
     <h2>Create an Account</h2>
 
@@ -26,11 +26,25 @@
         <input
             type="password"
             name="password"
+            id="password"
             placeholder="Create a password"
             required>
 
+        <label>Confirm Password</label>
+        <input
+            type="password"
+            name="confirm_password"
+            id="confirm_password"
+            placeholder="Confirm password"
+            required>
+        
+        <div class="show-password">
+            <input type="checkbox" id = "showPasswords">
+            <label for="showPasswords">Show Passwords</label>
+        </div>
+
         <button type="submit">
-            Register
+            Create Account
         </button>
 
         <p class="auth-link">

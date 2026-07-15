@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file, session
+from flask import Flask, render_template, request, redirect, url_for, send_file, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from ai_helper import generate_summary, generate_cover_letter
 from config import Config
@@ -193,8 +193,8 @@ def login():
         user = get_user_by_email(email)
 
         if user and check_password_hash(user[3], password):
-            session["user_id"] = user[0]
-            session["full_name"] = user[1]
+            session["user_id"] = user["id"]
+            session["full_name"] = user["full_name"]
             return redirect(url_for("dashboard"))
 
         return "Invalid email or password."
@@ -258,6 +258,26 @@ def view_resume(resume_id):
         resume = resume
     )
     
+@app.route("/download-resume/<int:resume_id>")
+def download_resume_pdf(resume_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    resume = get_resume_by_id(resume_id)
+
+    if not resume:
+        return "Resume not found."
+
+    pdf = create_resume_pdf(resume)
+
+    return send_file(
+        pdf,
+        as_attachment=True,
+        download_name=f"{resume['full_name']}_Resume.pdf",
+        mimetype="application/pdf"
+    )
+    
 @app.route("/delete/<int:resume_id>")
 def delete_resume_route(resume_id):
     
@@ -266,7 +286,6 @@ def delete_resume_route(resume_id):
     return redirect(url_for("dashboard"))
 
 @app.route("/edit/<int:resume_id>", methods = ["GET", "POST"])
-
 def edit_resume(resume_id):
     if request.method == "POST":
                 
@@ -306,11 +325,17 @@ def register():
         full_name = request.form["full_name"]
         email = request.form["email"]
         password = request.form["password"]
+        confirm_password = request.form["confirm_password"]
+        
+        if password != confirm_password:
+            flash("Passwords do not match.", "error")
+            return redirect(url_for("register"))
         
         existing_user = get_user_by_email(email)
         
         if existing_user:
-            return "An account with this email already exists."
+            flash("An account with this email already exists.", "error")
+            return redirect(url_for("register"))
 
         hashed_password = generate_password_hash(password)
 
@@ -319,8 +344,9 @@ def register():
             email,
             hashed_password
         )
-
-        return redirect(url_for("dashboard"))
+        
+        flash("Account created successfully! Please log in.", "success")
+        return redirect(url_for("login"))
 
     return render_template("register.html")
 

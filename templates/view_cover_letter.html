@@ -4,9 +4,13 @@
 
 <div class="cover-letter-container">
 
-    <h1>Cover Letter</h1>
+    <h1>
+        <i class="fa-solid fa-file-signature"></i>Cover Letter
+    </h1>
 
-    <h3>{{ letter["job_title"] }}</h3>
+    <h3 class="cover-job-title">
+        {{ letter["job_title"] }}
+    </h3>
 
     <p><strong>Company:</strong> {{ letter["company_name"] }}</p>
 
@@ -24,11 +28,15 @@
 
     <div class="resume-actions">
 
-        <a href="{{ url_for('download_cover_letter', letter_id=letter['id']) }}">
+        <a href="{{ url_for('download_cover_letter', letter_id=letter['id']) }}"
+        class="primary-btn">
+            <i class="fa-solid fa-download"></i>
             Download PDF
         </a>
 
-        <a href="{{ url_for('dashboard') }}">
+        <a href="{{ url_for('dashboard') }}"
+        class="primary-btn">
+            <i class="fa-solid fa-house"></i>
             Back to Dashboard
         </a>
 

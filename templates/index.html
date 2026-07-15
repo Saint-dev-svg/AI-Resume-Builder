@@ -4,14 +4,95 @@
 
 <section class="hero">
 
-    <h1>Create Professional Resumes with AI</h1>
+    <h1>Build Professional Resumes with AI</h1>
 
     <p>
-        Generate beautiful resumes and tailored cover letters in minutes.
+        Create ATS-friendly resumes and personalized cover letters in minutes.
+        Save them securely, edit anytime, and export them as professional PDFs.
     </p>
 
-    <button>Get Started</button>
+    <div class="hero-buttons">
+        <a href="{{ url_for('register') }}">
+            <button>Start building for free.</button>
+        </a>
+
+        <a href="#features">
+            <button class="secondary-btn">Learn More</button>
+        </a>
+    </div>
 
 </section>
+
+<section id="features" class="features">
+
+    <div class="feature-card">
+        <h2>🤖 AI Resume Generator</h2>
+        <p>
+            Generate professional summaries and resumes tailored to your skills
+            and experience.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <h2>📄 Cover Letter Generator</h2>
+        <p>
+            Instantly create personalized cover letters and download them as PDFs.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <h2>🔒 Secure Dashboard</h2>
+        <p>
+            Store, edit, search, and manage all your resumes in one place.
+        </p>
+    </div>
+
+</section>
+
+<section class="why-us">
+
+    <h2>Why Choose AI Resume Builder?</h2>
+
+    <div class="stats-grid">
+
+        <div class="stat-box">
+            <h3><i class="fa-solid fa-robot"></i></h3>
+            <h1>AI Powered</h1>
+            <p>Generate professional summaries and cover letters instantly.</p>
+        </div>
+
+        <div class="stat-box">
+            <h3><i class="fa-solid fa-file-lines"></i></h3>
+            <h1>PDF Export</h1>
+            <p>Download polished resumes and cover letters with one click.</p>
+        </div>
+
+        <div class="stat-box">
+            <h3><i class="fa-solid fa-shield-halved"></i></h3>
+            <h1>Secure</h1>
+            <p>Your resumes are stored safely and are accessible only by you.</p>
+        </div>
+
+        <div class="stat-box">
+            <h3><i class="fa-solid fa-bolt"></i></h3>
+            <h1>Fast</h1>
+            <p>Create a complete professional resume in just a few minutes.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<footer class="footer">
+
+    <p>
+        AI Resume Builder © 2026
+    </p>
+
+    <small>
+        Built with Flask • Python • SQLite
+    </small>
+
+</footer>
 
 {% endblock %}
