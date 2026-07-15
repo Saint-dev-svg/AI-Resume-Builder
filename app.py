@@ -1,15 +1,18 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from ai_helper import generate_summary
+from ai_helper import generate_summary, generate_cover_letter
 from config import Config
 from pdf_generator import create_resume_pdf
+from cover_letter_pdf import create_cover_letter_pdf
 from database.db import (init_db, save_resume, get_all_resumes, 
     get_resume_by_id, 
     delete_resume, update_resume, 
     search_resumes, sort_resumes,
     get_dashboard_stats,
     filter_resumes, save_user,
-    get_user_by_email
+    get_user_by_email, 
+    
+    save_cover_letter, get_all_cover_letters, get_cover_letter_by_id
 )
 
 
@@ -95,9 +98,89 @@ def resume():
         
     return render_template("resume.html", title = "Resume")
 
-@app.route("/cover-letter")
-def cover_letter():
-    return render_template("cover_letter.html", title = "Cover Letter")
+@app.route("/cover-letter/<int:resume_id>", methods=["GET", "POST"])
+def cover_letter(resume_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    resume = get_resume_by_id(resume_id)
+
+    if not resume:
+        return "Resume not found."
+
+    if request.method == "POST":
+
+        company_name = request.form["company_name"]
+        job_title = request.form["job_title"]
+        hiring_manager = request.form["hiring_manager"]
+
+        content = generate_cover_letter(
+            resume["full_name"],
+            resume["education"],
+            resume["skills"],
+            resume["experience"],
+            company_name,
+            job_title,
+            hiring_manager
+        )
+
+        letter_id = save_cover_letter(
+            session["user_id"],
+            resume_id,
+            company_name,
+            job_title,
+            hiring_manager,
+            content
+        )
+
+        return redirect(
+            url_for(
+                "view_cover_letter",
+                letter_id = letter_id
+            )
+        )
+
+    return render_template(
+        "cover_letter.html",
+        resume=resume
+    )
+    
+@app.route("/view-cover-letter/<int:letter_id>")
+def view_cover_letter(letter_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    letter = get_cover_letter_by_id(letter_id)
+
+    if not letter:
+        return "Cover letter not found."
+
+    return render_template(
+        "view_cover_letter.html",
+        letter=letter
+    )
+    
+@app.route("/download-cover-letter/<int:letter_id>")
+def download_cover_letter(letter_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    letter = get_cover_letter_by_id(letter_id)
+
+    if not letter:
+        return "Cover letter not found."
+
+    pdf = create_cover_letter_pdf(letter["content"])
+
+    return send_file(
+        pdf,
+        as_attachment=True,
+        download_name="cover_letter.pdf",
+        mimetype="application/pdf"
+    )
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

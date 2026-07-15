@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="cover-letter-container">
+
+    <h1>Cover Letter</h1>
+
+    <h3>{{ letter["job_title"] }}</h3>
+
+    <p><strong>Company:</strong> {{ letter["company_name"] }}</p>
+
+    {% if letter["hiring_manager"] %}
+        <p><strong>Hiring Manager:</strong> {{ letter["hiring_manager"] }}</p>
+    {% endif %}
+
+    <hr>
+
+    <div class="cover-letter-content">
+        {{ letter["content"] }}
+    </div>
+
+    <br>
+
+    <div class="resume-actions">
+
+        <a href="{{ url_for('download_cover_letter', letter_id=letter['id']) }}">
+            Download PDF
+        </a>
+
+        <a href="{{ url_for('dashboard') }}">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

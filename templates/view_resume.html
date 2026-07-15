@@ -36,11 +36,14 @@
         Edit Resume
     </a>
 
-</div>
-<div class="resume-actions"></div>
+    <a href="{{ url_for('cover_letter', resume_id=resume['id']) }}">
+        Generate Cover Letter
+    </a>
+
     <a href="{{ url_for('dashboard') }}">
         Back to Dashboard
     </a>
+
 </div>
 
 {% endblock %}

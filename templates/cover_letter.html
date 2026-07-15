@@ -2,12 +2,46 @@
 
 {% block content %}
 
-<section class="hero">
+<div class="resume-preview">
 
-    <h1>Cover Letter Generator</h1>
+    <h1>Generate Cover Letter</h1>
 
-    <p>Generate personalized cover letters in seconds.</p>
+    <p>
+        Creating a cover letter for
+        <strong>{{ resume["full_name"] }}</strong>
+    </p>
 
-</section>
+    <form method="POST">
+
+        <label>Company Name</label>
+        <input
+            type="text"
+            name="company_name"
+            required
+            placeholder="e.g. Google"
+        >
+
+        <label>Job Title</label>
+        <input
+            type="text"
+            name="job_title"
+            required
+            placeholder="e.g. Junior Software Developer"
+        >
+
+        <label>Hiring Manager (Optional)</label>
+        <input
+            type="text"
+            name="hiring_manager"
+            placeholder="e.g. Jane Doe"
+        >
+
+        <button type="submit">
+            Generate Cover Letter
+        </button>
+
+    </form>
+
+</div>
 
 {% endblock %}

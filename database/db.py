@@ -31,6 +31,25 @@ def init_db():
         )
     """)
     
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS cover_letters(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        resume_id INTEGER NOT NULL,
+
+        company_name TEXT NOT NULL,
+        job_title TEXT NOT NULL,
+        hiring_manager TEXT,
+
+        content TEXT NOT NULL,
+
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        FOREIGN KEY(user_id) REFERENCES users(id),
+        FOREIGN KEY(resume_id) REFERENCES resumes(id)
+    )
+""")
+    
     conn.commit()
     conn.close()
     
@@ -345,3 +364,76 @@ def get_user_resumes(user_id):
     conn.close()
     
     return resumes
+
+def save_cover_letter(
+    user_id,
+    resume_id,
+    company_name,
+    job_title,
+    hiring_manager,
+    content
+):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO cover_letters(
+            user_id,
+            resume_id,
+            company_name,
+            job_title,
+            hiring_manager,
+            content
+        )
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (
+        user_id,
+        resume_id,
+        company_name,
+        job_title,
+        hiring_manager,
+        content
+    ))
+
+    letter_id = cursor.lastrowid
+    
+    conn.commit()
+    conn.close()
+    
+    return letter_id
+    
+def get_cover_letter_by_id(letter_id):
+    conn = sqlite3.connect(DB_PATH)
+
+    conn.row_factory = sqlite3.Row
+
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT *
+        FROM cover_letters
+        WHERE id = ?
+    """, (letter_id,))
+
+    letter = cursor.fetchone()
+
+    conn.close()
+
+    return letter
+
+def get_all_cover_letters(user_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT *
+        FROM cover_letters
+        WHERE user_id = ?
+        ORDER BY id DESC
+    """, (user_id,))
+
+    letters = cursor.fetchall()
+
+    conn.close()
+
+    return letters
