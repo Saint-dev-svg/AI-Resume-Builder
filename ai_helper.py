@@ -96,3 +96,35 @@ def generate_summary(full_name, education, skills, experience):
         + build_experience(experience)
         + build_closing(skills)
     )
+    
+def generate_cover_letter(
+    full_name,
+    education,
+    skills,
+    experience,
+    company_name,
+    job_title,
+    hiring_manager
+):
+
+    greeting = (
+        f"Dear {hiring_manager},"
+        if hiring_manager.strip()
+        else "Dear Hiring Manager,"
+    )
+
+    return f"""
+{greeting}
+
+I am writing to express my interest in the {job_title} position at {company_name}.
+
+My name is {full_name}, and I have a background in {education}. Throughout my experience, I have developed strong skills in {skills} while gaining valuable experience in {experience}.
+
+I am passionate about building reliable software, solving real-world problems, and continuously improving my technical skills. I believe my background and enthusiasm would make me a valuable addition to your team.
+
+Thank you for considering my application. I would welcome the opportunity to discuss how I can contribute to {company_name}.
+
+Sincerely,
+
+{full_name}
+"""
